@@ -1,0 +1,14 @@
+name: Sandbox
+on:
+  workflow_dispatch:
+permissions: {}
+jobs:
+  fail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Fail after a minute
+        run: |
+          echo "BuildMonitor live test"
+          sleep 60
+          exit 1
