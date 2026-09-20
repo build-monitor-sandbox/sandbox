@@ -1,0 +1,23 @@
+name: Keepalive
+on:
+  schedule:
+    - cron: '41 3 1,15 * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Push, so discovery keeps the repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --allow-empty --message keepalive
+          git push --force origin HEAD:refs/heads/keepalive
+      - name: Start a fresh failing run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run sandbox.yml --repo "$GITHUB_REPOSITORY" --ref main
