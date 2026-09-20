@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Write the marker
+        run: echo "BuildMonitor live test" > marker.txt
+      # Published before the failure, since a step after it is skipped.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: marker
+          path: marker.txt
       - name: Fail after a minute
         run: |
           echo "BuildMonitor live test"
